@@ -1065,30 +1065,7 @@ print("\nFinal Model Summary:")
 print(final_model.summary())
 
 
-# In[34]:
 
-
-import pandas as pd
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-
-
-
-# Define the exact column name (copy-pasted from your data)
-column_name = "What improvements would you suggest for online food delivery platforms?"
-
-# Drop missing (NaN) responses and combine all text into one string
-text_data = df[column_name].dropna().astype(str).str.cat(sep=' ')
-
-# Generate the word cloud
-wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text_data)
-
-# Display the word cloud
-plt.figure(figsize=(10, 5))
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis('off')
-plt.title("Word Cloud: Suggested Improvements for Online Food Delivery Platforms")
-plt.show()
 
 
 # In[35]:
