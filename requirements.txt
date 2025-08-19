@@ -2,3 +2,4 @@ streamlit
 pandas
 pingouin
 plotly
+wordcloud
