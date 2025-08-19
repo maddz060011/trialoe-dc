@@ -276,77 +276,7 @@ plt.show()
 # In[10]:
 
 
-import pandas as pd
-import plotly.graph_objects as go
 
-# Load your CSV file
-df = pd.read_csv("Consumer Behavior and Preferences Toward Online Food Delivery Services (Responses) - Form responses 1.csv")
-
-# Count respondents by state
-state_counts = df['State'].value_counts().reset_index()
-state_counts.columns = ['State', 'Respondent Count']
-
-# Manual centroids for Malaysian states/federal territories
-state_coords = {
-    'Johor': (1.4854, 103.7618),
-    'Kedah': (6.1184, 100.3685),
-    'Kelantan': (6.1254, 102.2381),
-    'Kuala Lumpur': (3.1390, 101.6869),
-    'Malacca': (2.1896, 102.2501),
-    'Negeri Sembilan': (2.7258, 101.9424),
-    'Pahang': (3.8126, 103.3256),
-    'Penang': (5.4164, 100.3327),
-    'Perak': (4.5975, 101.0901),
-    'Perlis': (6.4440, 100.2048),
-    'Putrajaya': (2.9264, 101.6964),
-    'Sabah': (5.9804, 116.0735),
-    'Sarawak': (1.5533, 110.3592),
-    'Selangor': (3.0738, 101.5183),
-    'Terengganu': (5.3117, 103.1324),
-}
-
-# Add coordinates to the DataFrame
-state_counts['Latitude'] = state_counts['State'].map(lambda x: state_coords[x][0])
-state_counts['Longitude'] = state_counts['State'].map(lambda x: state_coords[x][1])
-
-# Create the map with no dots, only text
-fig = go.Figure(go.Scattergeo(
-    lon=state_counts['Longitude'],
-    lat=state_counts['Latitude'],
-    text=state_counts['State'] + ': ' + state_counts['Respondent Count'].astype(str),
-    textposition='bottom center',  # Position the text below each location
-    mode='text',  # Only display text, no markers
-    textfont=dict(
-        size=12,  # Font size for the text
-        color='black',  # Font color
-        family="Arial"  # Font family
-    ),
-    showlegend=False
-))
-
-# Update the layout for better readability
-fig.update_layout(
-    geo=dict(
-        projection_type="mercator",  # Set the map projection type
-        scope="asia",  # Set the map's scope to Asia
-        center=dict(lat=4.5, lon=101),  # Center the map around Malaysia
-        showland=True,  # Show land
-        landcolor="lightgray",  # Light color for land
-        subunitcolor="black",  # Color for subunits (states)
-        coastlinecolor="black",  # Color for coastline
-        lataxis=dict(range=[1, 7]),  # Limit latitude range to Malaysia
-        lonaxis=dict(range=[100, 119]),  # Limit longitude range to Malaysia
-    ),
-    title='Respondent Distribution by State in Malaysia',
-    title_x=0.5,  # Center the title
-    title_font=dict(size=16, color='black', family='Arial')
-)
-
-# Show the map
-fig.show()
-
-
-# In[31]:
 
 
 import pandas as pd
