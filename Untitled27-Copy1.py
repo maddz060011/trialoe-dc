@@ -152,24 +152,29 @@ plt.show()
 # In[6]:
 
 
+import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Assuming you already have the DataFrame `df` loaded
+# Load your data
+df = pd.read_csv("latest data.csv")  # Adjust path if needed
 
 # Create a cross-tabulation of State vs Most Preferred App
 state_app_counts = pd.crosstab(df['State'], df['Most Preferred App'])
 
 # Plotting
-plt.figure(figsize=(14, 8))
-state_app_counts.plot(kind='bar', stacked=True, colormap='viridis', figsize=(14, 8))
-plt.title('Most Preferred App by State', fontsize=16)
-plt.xlabel('State', fontsize=12)
-plt.ylabel('Number of Respondents', fontsize=12)
-plt.xticks(rotation=45)
-plt.legend(title='Most Preferred App')
+fig, ax = plt.subplots(figsize=(14, 8))
+state_app_counts.plot(kind='bar', stacked=True, colormap='viridis', ax=ax)
+ax.set_title('Most Preferred App by State', fontsize=16)
+ax.set_xlabel('State', fontsize=12)
+ax.set_ylabel('Number of Respondents', fontsize=12)
+ax.set_xticks(range(len(state_app_counts.index)))
+ax.set_xticklabels(state_app_counts.index, rotation=45)
+ax.legend(title='Most Preferred App')
 plt.tight_layout()
-plt.show()
+
+# Display in Streamlit
+st.pyplot(fig)
 
 
 
