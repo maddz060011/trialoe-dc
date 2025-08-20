@@ -3,3 +3,5 @@ pandas
 pingouin
 plotly
 wordcloud
+streamlit-authenticator
+
