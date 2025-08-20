@@ -1,12 +1,9 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit_authenticator as stauth
 from io import BytesIO
+
 # -------------------------
 # 1. User Authentication
 # -------------------------
@@ -16,7 +13,8 @@ usernames = ["alice", "bob", "charlie"]
 # Passwords (hashed for security)
 passwords = stauth.Hasher(["123", "456", "789"]).generate()
 
-authenticator = stauth.Authenticate(
+# Newer API uses Authenticator instead of Authenticate
+authenticator = stauth.Authenticator(
     names, usernames, passwords,
     "dashboard_cookie", "random_signature_key", cookie_expiry_days=1
 )
