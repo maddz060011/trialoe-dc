@@ -3,7 +3,12 @@ pandas
 pingouin
 plotly
 wordcloud
-streamlit-authenticator==0.2.3
+streamlit==1.37.0
+streamlit-authenticator==0.2.2
+pandas
+matplotlib
+xlsxwriter
+
 
 
 
