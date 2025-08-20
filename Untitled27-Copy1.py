@@ -7,7 +7,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit_authenticator as stauth
 from io import BytesIO
-
 # -------------------------
 # 1. User Authentication
 # -------------------------
