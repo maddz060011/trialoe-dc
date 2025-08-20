@@ -2,24 +2,85 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit_authenticator as stauth
-from io import BytesIO
 
-# -------------------------
-# 1. User Authentication
-# -------------------------
-names = ["Alice", "Bob", "Charlie"]
-usernames = ["alice", "bob", "charlie"]
+# -----------------------------
+# 1. User Credentials (hashed)
+# -----------------------------
+# Hash plain-text passwords just once (you can pre-hash them and paste here for security)
+hashed_passwords = stauth.Hasher(['123', '456', '789']).generate()
 
-# Passwords (hashed for security)
-passwords = stauth.Hasher(["123", "456", "789"]).generate()
+# Config dictionary for authenticator
+config = {
+    'credentials': {
+        'usernames': {
+            'alice': {
+                'name': 'Alice',
+                'password': hashed_passwords[0]
+            },
+            'bob': {
+                'name': 'Bob',
+                'password': hashed_passwords[1]
+            },
+            'charlie': {
+                'name': 'Charlie',
+                'password': hashed_passwords[2]
+            }
+        }
+    },
+    'cookie': {
+        'name': 'dashboard_cookie',
+        'key': 'random_signature_key',
+        'expiry_days': 1
+    },
+    'preauthorized': {}
+}
 
-# Newer API uses Authenticator instead of Authenticate
-authenticator = stauth.Authenticator(
-    names, usernames, passwords,
-    "dashboard_cookie", "random_signature_key", cookie_expiry_days=1
+# -----------------------------
+# 2. Authenticator
+# -----------------------------
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['preauthorized']
 )
 
+# -----------------------------
+# 3. Login Form
+# -----------------------------
 name, authentication_status, username = authenticator.login("Login", "main")
+
+if authentication_status:
+    authenticator.logout("Logout", "sidebar")
+    st.sidebar.write(f"Welcome *{name}* 👋")
+
+    # -----------------------------
+    # Your Dashboard Code Here
+    # -----------------------------
+    st.title("📊 Company Dashboard")
+
+    # Example: Load data
+    data = pd.DataFrame({
+        "Month": ["Jan", "Feb", "Mar", "Apr"],
+        "Sales": [100, 120, 90, 150]
+    })
+
+    # Show table
+    st.subheader("Sales Data")
+    st.dataframe(data)
+
+    # Show chart
+    fig, ax = plt.subplots()
+    ax.plot(data["Month"], data["Sales"], marker='o')
+    ax.set_title("Monthly Sales")
+    st.pyplot(fig)
+
+elif authentication_status is False:
+    st.error("❌ Username or password is incorrect")
+
+elif authentication_status is None:
+    st.warning("⚠️ Please enter your username and password")
 
 # -------------------------
 # 2. Dashboard after login
